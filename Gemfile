@@ -69,6 +69,8 @@ gem 'twitter'
 
 gem "rails-backbone"
 
+gem 'underscore-rails'
+
 group :test do
   gem 'spork'
   gem 'guard-spork'
