@@ -71,6 +71,8 @@ gem "rails-backbone"
 
 gem 'underscore-rails'
 
+gem 'whenever', :require => false
+
 group :test do
   gem 'spork'
   gem 'guard-spork'
