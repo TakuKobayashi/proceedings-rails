@@ -55,4 +55,29 @@ Rails.application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+  resource :top, controller: :top
+
+  resource :debug, controller: :debug
+
+  resources :user do
+    collection do
+      post :create_device
+    end
+  end
+
+  resources :proceeding
+
+  resources :sns_connections
+
+  namespace :api, format: false, defaults: { format: :json } do
+    resources :speech do
+      post :start
+      post :speak
+      post :stop
+    end
+  end
+
+  get "/auth/:provider/callback" => "sns_connections#create"
+
+  root to: "top#index"
 end
