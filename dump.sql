@@ -54,7 +54,7 @@ DROP TABLE IF EXISTS `mst_api_feature_configs`;
 CREATE TABLE `mst_api_feature_configs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `mst_api_config_id` int(11) NOT NULL,
-  `api_tag` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `category` int(11) NOT NULL,
   `request_url` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `request_format` int(11) NOT NULL,
   `limit_count` int(11) DEFAULT NULL,
@@ -62,7 +62,7 @@ CREATE TABLE `mst_api_feature_configs` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `mst_api_feature_configs_request_index` (`mst_api_config_id`,`api_tag`,`request_url`)
+  UNIQUE KEY `mst_api_feature_configs_request_index` (`mst_api_config_id`,`category`,`request_url`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -72,7 +72,7 @@ CREATE TABLE `mst_api_feature_configs` (
 
 LOCK TABLES `mst_api_feature_configs` WRITE;
 /*!40000 ALTER TABLE `mst_api_feature_configs` DISABLE KEYS */;
-INSERT INTO `mst_api_feature_configs` VALUES (1,1,'dependency','http://jlp.yahooapis.jp/DAService/V1/parse',1,50000,4000,'2014-10-18 13:57:20','2014-10-18 13:57:20'),(2,1,'key_phrase','http://jlp.yahooapis.jp/KeyphraseService/V1/extract',1,50000,100000,'2014-10-18 14:00:48','2014-10-18 14:00:48'),(3,1,'fixture_sentence','http://jlp.yahooapis.jp/KouseiService/V1/kousei',1,50000,100000,'2014-10-18 14:02:21','2014-10-18 14:02:21');
+INSERT INTO `mst_api_feature_configs` VALUES (1,1,0,'http://jlp.yahooapis.jp/DAService/V1/parse',1,50000,4000,'2014-10-18 13:57:20','2014-10-18 13:57:20'),(2,1,1,'http://jlp.yahooapis.jp/KeyphraseService/V1/extract',1,50000,100000,'2014-10-18 14:00:48','2014-10-18 14:00:48'),(3,1,2,'http://jlp.yahooapis.jp/KouseiService/V1/kousei',1,50000,100000,'2014-10-18 14:02:21','2014-10-18 14:02:21');
 /*!40000 ALTER TABLE `mst_api_feature_configs` ENABLE KEYS */;
 UNLOCK TABLES;
 
