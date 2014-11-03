@@ -25,21 +25,22 @@ class Api::SpeechesController < Api::BaseController
   def setup_data(sentence_ids)
     result = {}
     #頻出するワード上位5件
-    result[:frequentWordCount] = MorphologicalAnalysis.
+    word_counts = MorphologicalAnalysis.
                          where(sentence_id: sentence_ids, pos: "名詞").
                          group("surface").
                          order("COUNT(surface) DESC").
                          limit(5).count
-    result[:totalWordCount] = MorphologicalAnalysis.where(sentence_id: sentence_ids, pos: "名詞").count
+    result[:frequency] = {}
+    result[:frequency][:data_list] = word_counts.map{|k, v| {word: k, score: v} }
+    result[:frequency][:sum_value] = MorphologicalAnalysis.where(sentence_id: sentence_ids, pos: "名詞").count
+    result[:keyphrase] = {}
     score_list = KeyPhrase.where(sentence_id: sentence_ids).group(:keyphrase).average(:score)
     count_list = KeyPhrase.where(sentence_id: sentence_ids).group(:keyphrase).count
-    calc_list = score_list.inject({}) do |diff , (key, value)|
-      diff[key] = value * count_list[key].to_i
-      diff
-    end.sort_by{|key, value| -value}
-    list = calc_list.transpose
-    result[:totalKeyPhraseScore] = list[1].try(:sum)
-    result[:highKeyPhraseScore] = Hash[*[list[0][0..4], list[1][0..4]].transpose.flatten]
+    calc_list = score_list.map do |key, value|
+      {word: key, score: value * count_list[key].to_i} }
+    end.sort_by{|hash| -hash[:score]}
+    result[:keyphrase][:data_list] = calc_list
+    result[:keyphrase][:sum_value] = calc_list.sum{|h| h[:score].to_f}
     return result
   end
 end
