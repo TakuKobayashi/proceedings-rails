@@ -76,10 +76,12 @@ Rails.application.routes.draw do
   resources :sns_connections
 
   namespace :api, format: false, defaults: { format: :json } do
-    resources :speech do
-      post :start
-      post :speak
-      post :stop
+    resources :speeches, only: [] do
+      collection do
+        post :start
+        post :speak
+        post :stop
+      end
     end
 
     resource :environment, controller: :environment do
