@@ -37,7 +37,7 @@ class Api::SpeechesController < Api::BaseController
     score_list = KeyPhrase.where(sentence_id: sentence_ids).group(:keyphrase).average(:score)
     count_list = KeyPhrase.where(sentence_id: sentence_ids).group(:keyphrase).count
     calc_list = score_list.map do |key, value|
-      {word: key, score: value * count_list[key].to_i} }
+      {word: key, score: value * count_list[key].to_i}
     end.sort_by{|hash| -hash[:score]}
     result[:keyphrase][:data_list] = calc_list
     result[:keyphrase][:sum_value] = calc_list.sum{|h| h[:score].to_f}
